@@ -2,7 +2,7 @@ import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Todo } from '../models/todo.model';
+import { NewTodo, Todo, TodoStatus } from '../models/todo.model';
 
 interface ApiListResponse {
   data: Todo[];
@@ -20,7 +20,10 @@ export class TodoService {
   readonly errorMessage = signal<string | null>(null);
 
   readonly totalCount = computed(() => this.todos().length);
-  readonly remainingCount = computed(() => this.todos().filter((t) => !t.completed).length);
+  readonly remainingCount = computed(() => this.todos().filter((t) => t.status !== 'done').length);
+  readonly doingCount = computed(() => this.todos().filter((t) => t.status === 'doing').length);
+  readonly overdueCount = computed(() => this.todos().filter((t) => t.overdue).length);
+  readonly dueSoonCount = computed(() => this.todos().filter((t) => t.due_soon).length);
 
   constructor(private http: HttpClient) {}
 
@@ -38,12 +41,13 @@ export class TodoService {
     }
   }
 
-  async addTodo(title: string): Promise<void> {
+  async addTodo(title: string, extra?: Omit<NewTodo, 'title'>): Promise<void> {
     const trimmed = title.trim();
     if (!trimmed) return;
+    const body: NewTodo = { title: trimmed, ...extra };
     try {
       const res = await firstValueFrom(
-        this.http.post<ApiItemResponse>(this.apiUrl, { title: trimmed })
+        this.http.post<ApiItemResponse>(this.apiUrl, body)
       );
       this.todos.update((list) => [res.data, ...list]);
     } catch (err) {
@@ -52,13 +56,45 @@ export class TodoService {
     }
   }
 
+  async setStatus(id: number, status: TodoStatus): Promise<void> {
+    const prev = this.todos();
+    this.todos.update((list) =>
+      list.map((t) =>
+        t.id === id
+          ? { ...t, status, completed: status === 'done', overdue: false }
+          : t
+      )
+    );
+    try {
+      const res = await firstValueFrom(
+        this.http.patch<ApiItemResponse>(`${this.apiUrl}/${id}/status`, { status })
+      );
+      this.todos.update((list) => list.map((t) => (t.id === id ? res.data : t)));
+    } catch (err) {
+      this.todos.set(prev);
+      this.errorMessage.set('ไม่สามารถอัปเดตสถานะได้');
+      console.error(err);
+    }
+  }
+
   async toggleTodo(id: number): Promise<void> {
     const prev = this.todos();
     this.todos.update((list) =>
-      list.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
+      list.map((t) =>
+        t.id === id
+          ? {
+              ...t,
+              completed: !t.completed,
+              status: !t.completed ? 'done' : 'todo',
+            }
+          : t
+      )
     );
     try {
-      await firstValueFrom(this.http.patch<ApiItemResponse>(`${this.apiUrl}/${id}/toggle`, {}));
+      const res = await firstValueFrom(
+        this.http.patch<ApiItemResponse>(`${this.apiUrl}/${id}/toggle`, {})
+      );
+      this.todos.update((list) => list.map((t) => (t.id === id ? res.data : t)));
     } catch (err) {
       this.todos.set(prev);
       this.errorMessage.set('ไม่สามารถอัปเดตสถานะได้');

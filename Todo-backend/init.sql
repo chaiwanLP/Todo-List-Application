@@ -1,6 +1,9 @@
 CREATE TABLE IF NOT EXISTS todos (
   id SERIAL PRIMARY KEY,
   title TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT '',
+  due_date TIMESTAMPTZ NULL,
+  status TEXT NOT NULL DEFAULT 'todo' CHECK (status IN ('todo', 'doing', 'done')),
   completed BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()

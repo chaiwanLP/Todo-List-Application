@@ -19,7 +19,21 @@
             }
         },
         {
-            "name": "Create todo",
+            "name": "List overdue",
+            "request": {
+                "method": "GET",
+                "url": "http://localhost:3000/api/todos?overdue=true"
+            }
+        },
+        {
+            "name": "List doing",
+            "request": {
+                "method": "GET",
+                "url": "http://localhost:3000/api/todos?status=doing"
+            }
+        },
+        {
+            "name": "Create todo (full)",
             "request": {
                 "header": [
                     {
@@ -31,7 +45,7 @@
                 "url": "http://localhost:3000/api/todos",
                 "body": {
                     "mode": "raw",
-                    "raw": "{\"title\": \"Buy milk\"}"
+                    "raw": "{\"title\": \"ส่งรายงาน\", \"category\": \"งาน\", \"due_date\": \"2026-09-30T17:00:00+07:00\", \"status\": \"todo\"}"
                 }
             }
         },
@@ -55,7 +69,24 @@
                 "url": "http://localhost:3000/api/todos/1",
                 "body": {
                     "mode": "raw",
-                    "raw": "{\"title\": \"Buy milk updated\", \"completed\": true}"
+                    "raw": "{\"title\": \"ส่งรายงาน (แก้)\", \"category\": \"งาน\", \"due_date\": \"2026-09-30T17:00:00+07:00\", \"status\": \"doing\"}"
+                }
+            }
+        },
+        {
+            "name": "Set status doing/done",
+            "request": {
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "method": "PATCH",
+                "url": "http://localhost:3000/api/todos/1/status",
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"status\": \"doing\"}"
                 }
             }
         },
