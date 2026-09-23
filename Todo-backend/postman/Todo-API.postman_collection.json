@@ -1,1 +1,83 @@
-{"info": {"name": "Todo API", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"}, "item": [{"name": "Health", "request": {"method": "GET", "url": "http://localhost:3000/health"}}, {"name": "List todos", "request": {"method": "GET", "url": "http://localhost:3000/api/todos"}}, {"name": "Create todo", "request": {"header": [{"key": "Content-Type", "value": "application/json"}], "method": "POST", "url": "http://localhost:3000/api/todos", "body": {"mode": "raw", "raw": "{\"title\": \"Buy milk\"}"}}}, {"name": "Get one todo", "request": {"method": "GET", "url": "http://localhost:3000/api/todos/1"}}, {"name": "Update todo (PUT)", "request": {"header": [{"key": "Content-Type", "value": "application/json"}], "method": "PUT", "url": "http://localhost:3000/api/todos/1", "body": {"mode": "raw", "raw": "{\"title\": \"Buy milk updated\", \"completed\": true}"}}}, {"name": "Toggle todo", "request": {"method": "PATCH", "url": "http://localhost:3000/api/todos/1/toggle"}}, {"name": "Delete todo", "request": {"method": "DELETE", "url": "http://localhost:3000/api/todos/1"}}], "variable": [{"key": "baseUrl", "value": "http://localhost:3000"}]}
+{
+    "info": {
+        "name": "Todo API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Health",
+            "request": {
+                "method": "GET",
+                "url": "http://localhost:3000/health"
+            }
+        },
+        {
+            "name": "List todos",
+            "request": {
+                "method": "GET",
+                "url": "http://localhost:3000/api/todos"
+            }
+        },
+        {
+            "name": "Create todo",
+            "request": {
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "method": "POST",
+                "url": "http://localhost:3000/api/todos",
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"title\": \"Buy milk\"}"
+                }
+            }
+        },
+        {
+            "name": "Get one todo",
+            "request": {
+                "method": "GET",
+                "url": "http://localhost:3000/api/todos/1"
+            }
+        },
+        {
+            "name": "Update todo (PUT)",
+            "request": {
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "method": "PUT",
+                "url": "http://localhost:3000/api/todos/1",
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"title\": \"Buy milk updated\", \"completed\": true}"
+                }
+            }
+        },
+        {
+            "name": "Toggle todo",
+            "request": {
+                "method": "PATCH",
+                "url": "http://localhost:3000/api/todos/1/toggle"
+            }
+        },
+        {
+            "name": "Delete todo",
+            "request": {
+                "method": "DELETE",
+                "url": "http://localhost:3000/api/todos/1"
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:3000"
+        }
+    ]
+}
