@@ -91,7 +91,9 @@ npm test        # unit test (Vitest, 2 passed)
 
 ## 4) ทดสอบ API ด้วย Postman
 
-1. เปิด Postman → Import → เลือก `Todo-backend/postman/Todo-API.postman_collection.json`
+ไฟล์ test: `Todo-backend/postman/Todo-API.postman_collection.json`
+
+1. เปิด Postman → Import → เลือกไฟล์ข้างบน
 2. กด Runner รัน 10 ข้อตามลำดับ (ข้อ Create ส่ง `todoId` ต่อให้ข้ออื่นเอง มี assert `status/data` ทุกข้อ):
    `Health → List → Create (201) → Get one → PUT → Set status → Toggle → Overdue → Due soon → Delete`
 3. แบบ CLI: `npx newman run Todo-backend/postman/Todo-API.postman_collection.json`
