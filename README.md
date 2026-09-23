@@ -9,12 +9,12 @@ Todo app แบบ full-stack: เพิ่ม / หมวดหมู่ / ก�
 
 ## Tech Stack
 
-| ส่วน | เทคโนโลยี |
-|---|---|
+| ส่วน     | เทคโนโลยี                                                                                                            |
+| -------- | -------------------------------------------------------------------------------------------------------------------- |
 | Frontend | Angular 22 (standalone + signals/computed/effect), Tailwind CSS v4 (`@theme`, dark variant), TypeScript, FormsModule |
-| Backend | Node.js 24, Express 4, `pg`, CORS, dotenv |
-| Database | PostgreSQL 16 (ผ่าน Docker) |
-| Test | Vitest (`ng test`), Postman collection (10 requests + test scripts) / Newman |
+| Backend  | Node.js 24, Express 4, `pg`, CORS, dotenv                                                                            |
+| Database | PostgreSQL 16 (ผ่าน Docker)                                                                                          |
+| Test     | Vitest (`ng test`), Postman collection (10 requests + test scripts) / Newman                                         |
 
 ## ฟีเจอร์
 
@@ -60,20 +60,20 @@ npm start
 
 เช็ค: เปิด `http://localhost:3000/health` ต้องได้ `{"status":"ok"}` (server migrate table ให้เอง)
 
-ค่า config อยู่ใน `.env` (`DATABASE_URL`, `PORT=3000`, `CORS_ORIGIN=http://localhost:4200`) — ห้ามอัป `.env` ขึ้น Git (มี `.env.example` ให้แล้ว)
+ค่า config อยู่ใน `.env` (`DATABASE_URL`, `PORT=3000`, `CORS_ORIGIN=http://localhost:4200`)
 
 ### API Endpoints
 
-| Method | URL | ใช้ทำอะไร |
-|---|---|---|
-| GET | `/health` | เช็ค server |
-| GET | `/api/todos` | ดึงทั้งหมด (+ `?status=&overdue=&due_soon=&q=`) |
-| GET | `/api/todos/:id` | ดึง 1 รายการ |
-| POST | `/api/todos` `{title, category?, due_date?, status?}` | สร้าง (`201` + `{data}`) |
-| PUT | `/api/todos/:id` `{title?, category?, due_date?, status?, completed?}` | แก้ไข (`due_date: null` = ล้างกำหนด) |
-| PATCH | `/api/todos/:id/status` `{status}` | เปลี่ยนสถานะ todo/doing/done |
-| PATCH | `/api/todos/:id/toggle` | สลับเสร็จ/ยังไม่เสร็จ (compat) |
-| DELETE | `/api/todos/:id` | ลบ |
+| Method | URL                                                                    | ใช้ทำอะไร                                       |
+| ------ | ---------------------------------------------------------------------- | ----------------------------------------------- |
+| GET    | `/health`                                                              | เช็ค server                                     |
+| GET    | `/api/todos`                                                           | ดึงทั้งหมด (+ `?status=&overdue=&due_soon=&q=`) |
+| GET    | `/api/todos/:id`                                                       | ดึง 1 รายการ                                    |
+| POST   | `/api/todos` `{title, category?, due_date?, status?}`                  | สร้าง (`201` + `{data}`)                        |
+| PUT    | `/api/todos/:id` `{title?, category?, due_date?, status?, completed?}` | แก้ไข (`due_date: null` = ล้างกำหนด)            |
+| PATCH  | `/api/todos/:id/status` `{status}`                                     | เปลี่ยนสถานะ todo/doing/done                    |
+| PATCH  | `/api/todos/:id/toggle`                                                | สลับเสร็จ/ยังไม่เสร็จ (compat)                  |
+| DELETE | `/api/todos/:id`                                                       | ลบ                                              |
 
 ทุก response งานมี `overdue` + `due_soon` คำนวณให้ (`{data}`)
 
