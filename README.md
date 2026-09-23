@@ -2,11 +2,6 @@
 
 Todo app แบบ full-stack: เพิ่ม / หมวดหมู่ / กำหนดวัน-เวลา / สถานะ ต้องทำ→กำลังทำ→เสร็จ / เตือนเกินเวลา + ใกล้ถึงกำหนด ข้อมูลซิงก์ REST API เก็บใน PostgreSQL รีเฟรชแล้วไม่หาย
 
-## Repositories
-
-- Frontend: `https://github.com/chaiwanLP/Todo-frontend`
-- Backend: `https://github.com/chaiwanLP/Todo-backend`
-
 ## Tech Stack
 
 | ส่วน     | เทคโนโลยี                                                                                                            |
