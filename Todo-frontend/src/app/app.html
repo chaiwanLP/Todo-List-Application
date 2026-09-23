@@ -1,0 +1,22 @@
+<div class="min-h-screen bg-todo-bg font-display p-8">
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-900">Hello, {{ title() }} - Tailwind v4 Demo</h1>
+    <p class="mt-2 text-gray-600">เปรียบเทียบสี default vs สี custom จาก @theme</p>
+
+    <div class="mt-6 grid grid-cols-2 gap-4">
+      <div class="rounded-xl bg-blue-500 p-6 text-white shadow">
+        <p class="font-bold">bg-blue-500</p>
+        <p class="text-sm opacity-80">สี default ของ Tailwind</p>
+      </div>
+      <div class="rounded-xl bg-primary p-6 text-white shadow hover:bg-primary-dark transition">
+        <p class="font-bold">bg-primary</p>
+        <p class="text-sm opacity-80">สี custom จาก @theme (#4f46e5)</p>
+      </div>
+    </div>
+
+    <div class="mt-4 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <p class="text-sm text-gray-500">class ที่มาจาก @theme ใน <code>src/styles.css</code>:</p>
+      <code class="mt-2 block rounded bg-gray-900 p-3 text-xs text-green-400">bg-primary / bg-primary-dark / bg-todo-bg / font-display</code>
+    </div>
+  </div>
+</div>
