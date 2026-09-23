@@ -1,39 +1,65 @@
 {
     "info": {
         "name": "Todo API",
+        "description": "CRUD tests for Todo RESTful API (Express + PostgreSQL). Run in order: Runner keeps todoId from Create step.",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
-            "name": "Health",
+            "name": "1. Health",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('status 200', () => pm.response.to.have.status(200));",
+                            "pm.test('body ok', () => pm.expect(pm.response.json().status).to.eql('ok'));"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
             "request": {
                 "method": "GET",
-                "url": "http://localhost:3000/health"
+                "url": "{{baseUrl}}/health"
             }
         },
         {
-            "name": "List todos",
+            "name": "2. List todos",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('status 200', () => pm.response.to.have.status(200));",
+                            "pm.test('data is array', () => pm.expect(pm.response.json().data).to.be.an('array'));"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
             "request": {
                 "method": "GET",
-                "url": "http://localhost:3000/api/todos"
+                "url": "{{baseUrl}}/api/todos"
             }
         },
         {
-            "name": "List overdue",
-            "request": {
-                "method": "GET",
-                "url": "http://localhost:3000/api/todos?overdue=true"
-            }
-        },
-        {
-            "name": "List doing",
-            "request": {
-                "method": "GET",
-                "url": "http://localhost:3000/api/todos?status=doing"
-            }
-        },
-        {
-            "name": "Create todo (full)",
+            "name": "3. Create todo (full)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('status 201', () => pm.response.to.have.status(201));",
+                            "const j = pm.response.json();",
+                            "pm.test('has data.id', () => pm.expect(j.data.id).to.be.a('number'));",
+                            "pm.test('has due_soon flag', () => pm.expect(j.data).to.have.property('due_soon'));",
+                            "pm.collectionVariables.set('todoId', j.data.id);"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
             "request": {
                 "header": [
                     {
@@ -42,7 +68,7 @@
                     }
                 ],
                 "method": "POST",
-                "url": "http://localhost:3000/api/todos",
+                "url": "{{baseUrl}}/api/todos",
                 "body": {
                     "mode": "raw",
                     "raw": "{\"title\": \"ส่งรายงาน\", \"category\": \"งาน\", \"due_date\": \"2026-09-30T17:00:00+07:00\", \"status\": \"todo\"}"
@@ -50,14 +76,38 @@
             }
         },
         {
-            "name": "Get one todo",
+            "name": "4. Get one todo",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('status 200', () => pm.response.to.have.status(200));",
+                            "pm.test('same id', () => pm.expect(pm.response.json().data.id).to.eql(Number(pm.collectionVariables.get('todoId'))));"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
             "request": {
                 "method": "GET",
-                "url": "http://localhost:3000/api/todos/1"
+                "url": "{{baseUrl}}/api/todos/{{todoId}}"
             }
         },
         {
-            "name": "Update todo (PUT)",
+            "name": "5. Update todo (PUT)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('status 200', () => pm.response.to.have.status(200));",
+                            "pm.test('status doing', () => pm.expect(pm.response.json().data.status).to.eql('doing'));"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
             "request": {
                 "header": [
                     {
@@ -66,7 +116,7 @@
                     }
                 ],
                 "method": "PUT",
-                "url": "http://localhost:3000/api/todos/1",
+                "url": "{{baseUrl}}/api/todos/{{todoId}}",
                 "body": {
                     "mode": "raw",
                     "raw": "{\"title\": \"ส่งรายงาน (แก้)\", \"category\": \"งาน\", \"due_date\": \"2026-09-30T17:00:00+07:00\", \"status\": \"doing\"}"
@@ -74,7 +124,19 @@
             }
         },
         {
-            "name": "Set status doing/done",
+            "name": "6. Set status done",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('status 200', () => pm.response.to.have.status(200));",
+                            "pm.test('status done', () => pm.expect(pm.response.json().data.status).to.eql('done'));"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
             "request": {
                 "header": [
                     {
@@ -83,25 +145,86 @@
                     }
                 ],
                 "method": "PATCH",
-                "url": "http://localhost:3000/api/todos/1/status",
+                "url": "{{baseUrl}}/api/todos/{{todoId}}/status",
                 "body": {
                     "mode": "raw",
-                    "raw": "{\"status\": \"doing\"}"
+                    "raw": "{\"status\": \"done\"}"
                 }
             }
         },
         {
-            "name": "Toggle todo",
+            "name": "7. Toggle todo",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('status 200', () => pm.response.to.have.status(200));",
+                            "pm.test('has data', () => pm.expect(pm.response.json()).to.have.property('data'));"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
             "request": {
                 "method": "PATCH",
-                "url": "http://localhost:3000/api/todos/1/toggle"
+                "url": "{{baseUrl}}/api/todos/{{todoId}}/toggle"
             }
         },
         {
-            "name": "Delete todo",
+            "name": "8. List overdue",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('status 200', () => pm.response.to.have.status(200));",
+                            "pm.test('data is array', () => pm.expect(pm.response.json().data).to.be.an('array'));"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/todos?overdue=true"
+            }
+        },
+        {
+            "name": "9. List due soon (24h)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('status 200', () => pm.response.to.have.status(200));",
+                            "pm.test('data is array', () => pm.expect(pm.response.json().data).to.be.an('array'));"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "GET",
+                "url": "{{baseUrl}}/api/todos?due_soon=true"
+            }
+        },
+        {
+            "name": "10. Delete todo",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test('status 200', () => pm.response.to.have.status(200));"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
             "request": {
                 "method": "DELETE",
-                "url": "http://localhost:3000/api/todos/1"
+                "url": "{{baseUrl}}/api/todos/{{todoId}}"
             }
         }
     ],
@@ -109,6 +232,10 @@
         {
             "key": "baseUrl",
             "value": "http://localhost:3000"
+        },
+        {
+            "key": "todoId",
+            "value": "1"
         }
     ]
 }
