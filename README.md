@@ -11,6 +11,8 @@ Todo app แบบ full-stack: เพิ่ม / หมวดหมู่ / ก�
 | Database | PostgreSQL 16 (ผ่าน Docker)                                                                                          |
 | Test     | Vitest (`ng test`), Postman collection (10 requests + test scripts) / Newman                                         |
 
+Todo : https://todo-list-application-ebon-gamma.vercel.app/
+
 ## ฟีเจอร์
 
 - เพิ่มงานพร้อม **หมวด (category) + วัน + เวลา** (`due_date`)
