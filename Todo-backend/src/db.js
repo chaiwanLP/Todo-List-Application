@@ -1,10 +1,16 @@
 const { Pool } = require('pg');
 
-const connectionString = process.env.DATABASE_URL;
+const rawUrl = process.env.DATABASE_URL || '';
 // Neon / Supabase / Render Postgres บังคับ SSL — ถ้าไม่มี ssl จะต่อไม่ติด
 const needsSsl =
-  /sslmode=require/i.test(connectionString || '') ||
-  /neon\.tech|supabase\.co|render\.com/i.test(connectionString || '');
+  /sslmode=require/i.test(rawUrl) ||
+  /neon\.tech|supabase\.co|render\.com/i.test(rawUrl);
+
+// ตัด sslmode ออกจาก URL ก่อนส่งให้ pg (ไม่งั้น pg จะใช้โหมด verify ของตัวเอง
+// ทับ ssl object ข้างล่าง แล้วเจอ self-signed cert ของ pooler)
+const connectionString = rawUrl
+  .replace(/[?&]sslmode=[^&]*/i, '')
+  .replace(/[?&]$/, '');
 
 const pool = new Pool({
   connectionString,
