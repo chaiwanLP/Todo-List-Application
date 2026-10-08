@@ -1,7 +1,14 @@
 const { Pool } = require('pg');
 
+const connectionString = process.env.DATABASE_URL;
+// Neon / Supabase / Render Postgres บังคับ SSL — ถ้าไม่มี ssl จะต่อไม่ติด
+const needsSsl =
+  /sslmode=require/i.test(connectionString || '') ||
+  /neon\.tech|supabase\.co|render\.com/i.test(connectionString || '');
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString,
+  ...(needsSsl ? { ssl: { rejectUnauthorized: false } } : {}),
 });
 
 pool.on('error', (err) => {
